@@ -35,7 +35,7 @@ if st.button("Generate CV"):
     if response.status_code == 200:
         st.success("CV generated successfully on Overleaf! You can access it there.")
         st.write("You can download the generated PDF from the following link:")
-        overleaf_url = response.json().get("url")
+        overleaf_url = response.url  # Use the URL directly
         st.write(f"[Download CV PDF from Overleaf]({overleaf_url})")
     else:
         st.error("Error generating CV. Please try again later.")
