@@ -69,9 +69,9 @@ interests1 = st.text_input("Interessen")
 
 # Button zum Erstellen des CVs
 if st.button("CV Erstellen"):
-   with open('template_finance.tex', 'r') as file:
+    with open('template_finance.tex', 'r', encoding='utf-8') as file:
         latex_template = file.read()
-
+    latex_filled = latex_template.format(
         name=name,
         address=address,
         phone=phone,
@@ -124,6 +124,9 @@ if st.button("CV Erstellen"):
         languages1=languages1,
         computer1=computer1, 
         interests1=interests1, 
-    
+    )
+
+    # Hier würden Sie die Logik für die PDF-Erzeugung einfügen
+    # ...
 
     st.success("CV erfolgreich erstellt!")
