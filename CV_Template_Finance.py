@@ -1,1 +1,1 @@
-CV_Template_Finance
+print("Hello World")
