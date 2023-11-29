@@ -89,7 +89,7 @@ def compile_pdf(name, address, mobile, email):
         "code": latex_code,
     }
 
-    response = requests.post("https://latexonline.cc/compile", data=data)
+    response = requests.post("https://www.overleaf.com/project", data=data)
     
     if response.status_code == 200:
         pdf_data = response.content
