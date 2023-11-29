@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import urllib.parse
 
 # Streamlit-Benutzeroberfläche
 st.title("CV-Generator")
@@ -126,7 +127,14 @@ if st.button("CV Erstellen"):
         interests1=interests1, 
     )
 
-    # Hier würden Sie die Logik für die PDF-Erzeugung einfügen
-    # ...
+    encoded_latex = urllib.parse.quote(latex_filled)
 
-    st.success("CV erfolgreich erstellt!")
+    # Senden des LaTeX-Textes an die LaTeX.Online API
+    api_url = f"https://latexonline.cc/compile?text={encoded_latex}"
+    response = requests.get(api_url)
+
+    if response.status_code == 200:
+        pdf = response.content
+        st.download_button(label="Download CV", data=pdf, file_name="cv.pdf", mime="application/pdf")
+    else:
+        st.error("Fehler bei der Erstellung des CVs.")
