@@ -69,7 +69,61 @@ interests1 = st.text_input("Interessen")
 
 # Button zum Erstellen des CVs
 if st.button("CV Erstellen"):
-    # Hier die Logik zum Einsetzen der Daten in die LaTeX-Vorlage und deren Verarbeitung hinzufügen
-    # ...
+   with open('template_finance.tex', 'r') as file:
+        latex_template = file.read()
+
+        name=name,
+        address=address,
+        phone=phone,
+        email=email,
+
+        university1=university1, 
+        location_us1=location_us1, 
+        majorus1=majorus1, 
+        timeus1=timeus1,
+        courses1=courses1, 
+        gpa1=gpa1, 
+        clubs1=clubs1,
+
+        university2=university2, 
+        location_us2=location_us2, 
+        majorus2=majorus2, 
+        timeus2=timeus2, 
+        courses2=courses2, 
+        gpa2=gpa2, 
+        clubs2=clubs2, 
+
+        experience1=experience1, 
+        location_e1=location_e1, 
+        position1=position1, 
+        timee1=timee1, 
+        task11=task11, 
+        task12=task12, 
+        task13=task13, 
+
+        experience2=experience2, 
+        location_e2=location_e2, 
+        position2=position2, 
+        timee2=timee2, 
+        task21=task21, 
+        task22=task22, 
+        task23=task23, 
+
+        experience3=experience3,
+        location_e3=location_e3, 
+        position3=position3, 
+        timee3=timee3, 
+        task31=task31, 
+        task32=task32, 
+        task33=task33, 
+
+        extracurricular1=extracurricular1, 
+        additionaleducation1=additionaleducation1, 
+        certificates1=certificates1, 
+
+        languages1=languages1,
+        computer1=computer1, 
+        interests1=interests1, 
+    
 
     st.success("CV erfolgreich erstellt!")
