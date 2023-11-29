@@ -4,7 +4,7 @@ import requests
 latex_preamble = r"""
 \documentclass[a4paper,8pt]{article}
 
-\usepackage{parskip} 
+\usepackage{parskip}
 \usepackage{hologo}
 \usepackage{fontspec}
 % ... (rest of the preamble remains the same)
@@ -14,7 +14,7 @@ def compile_pdf(name, address, mobile, email):
     latex_code = fr"""
     \documentclass[a4paper,8pt]{{article}}
 
-    \usepackage{{parskip}} 
+    \usepackage{{parskip}}
     \usepackage{{hologo}}
     \usepackage{{fontspec}}
 
@@ -32,7 +32,7 @@ def compile_pdf(name, address, mobile, email):
     \usepackage{{enumitem}}
 
     % centered version of 'X' col. type
-    \newcolumntype{{C}}{{>{{\centering\arraybackslash}}X}} 
+    \newcolumntype{{C}}{{>{{\centering\arraybackslash}}X}}
 
     %to prevent spillover of tabular into next pages
     \usepackage{{supertabular}}
@@ -41,11 +41,11 @@ def compile_pdf(name, address, mobile, email):
     \setlength{{\fullcollw}}{{0.42\textwidth}}
 
     %custom \section
-    \usepackage{{titlesec}}                
+    \usepackage{{titlesec}}
     \usepackage{{multicol}}
     \usepackage{{multirow}}
 
-    %CV Sections inspired by: 
+    %CV Sections inspired by:
     %http://stefano.italians.nl/archives/26
     \titleformat{{\section}}{{\Large\scshape\raggedright}}{{}}{{0em}}{{}}[\titlerule]
     \titlespacing{{\section}}{{1pt}}{{2pt}}{{2pt}}
@@ -71,8 +71,7 @@ def compile_pdf(name, address, mobile, email):
     \begin{{document}}
 
     % non-numbered pages
-    \pagestyle{{empty}} 
-
+    \pagestyle{{empty}}
 
     \begin{{tabularx}}{{\linewidth}}{{@{{}} C @{{}}}}
     \color[HTML]{{1C033C}} \Huge{{\textbf{{{name}}}}} \\[6pt]
@@ -84,20 +83,24 @@ def compile_pdf(name, address, mobile, email):
     \end{{document}}
     """
 
+    # Replace placeholders in LaTeX code with user inputs
+    latex_code = latex_code.replace("<<NAME>>", name)
+    latex_code = latex_code.replace("<<ADDRESS>>", address)
+    latex_code = latex_code.replace("<<MOBILE>>", mobile)
+    latex_code = latex_code.replace("<<EMAIL>>", email)
+
     data = {
         "compiler": "pdflatex",
         "code": latex_code,
     }
 
-    response = requests.post("https://www.overleaf.com/project", data=data)
-    
+    response = requests.post("https://latexonline.cc/compile", data=data)
+
     if response.status_code == 200:
         pdf_data = response.content
         return pdf_data
     else:
         st.error("Error compiling PDF")
-
-
 
 st.write("# Applify")
 st.latex(r"\LaTeX")
