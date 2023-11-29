@@ -1,5 +1,5 @@
 import streamlit as st
-import subprocess
+import requests
 
 latex_preamble = r"""
 \documentclass[a4paper,8pt]{article}
@@ -10,7 +10,7 @@ latex_preamble = r"""
 % ... (rest of the preamble remains the same)
 """
 
-def build_pdf(name, address, mobile, email):
+def compile_pdf(name, address, mobile, email):
     latex_code = fr"""
     \documentclass[a4paper,8pt]{{article}}
 
@@ -84,16 +84,18 @@ def build_pdf(name, address, mobile, email):
     \end{{document}}
     """
 
-    with open("temp.tex", "w") as f:
-        f.write(latex_code)
+    data = {
+        "compiler": "pdflatex",
+        "code": latex_code,
+    }
 
-    subprocess.run(["/Library/TeX/texbin/xelatex", "-interaction=batchmode", "temp.tex"])
-    subprocess.run(["rm", "temp.aux", "temp.log", "temp.tex"])
-
-    with open("temp.pdf", "rb") as f:
-        pdf_data = f.read()
-
-    return pdf_data
+    response = requests.post("https://latexonline.cc/compile", data=data)
+    
+    if response.status_code == 200:
+        pdf_data = response.content
+        return pdf_data
+    else:
+        st.error("Error compiling PDF")
 
 
 
@@ -107,5 +109,6 @@ mobile = st.text_input("Mobile", "+49 (157) 54058312")
 email = st.text_input("Email", "juliangottstein@gmx.com")
 
 if st.button("Compile PDF"):
-    pdf_data = build_pdf(name, address, mobile, email)
-    st.download_button("Download PDF", pdf_data, file_name='CV.pdf', mime='application/pdf')
+    pdf_data = compile_pdf(name, address, mobile, email)
+    if pdf_data is not None:
+        st.download_button("Download PDF", pdf_data, file_name='CV.pdf', mime='application/pdf')
