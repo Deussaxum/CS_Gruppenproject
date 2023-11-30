@@ -72,6 +72,7 @@ interests1 = st.text_input("Interessen")
 if st.button("CV Erstellen"):
     with open('template_finance.tex', 'r', encoding='utf-8') as file:
         latex_template = file.read()
+        print(latex_template)
     latex_filled = latex_template.format(
         name=name,
         address=address,
