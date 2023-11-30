@@ -73,6 +73,7 @@ if st.button("CV Erstellen"):
             latex_template = file.read()
 
         try:
+            # Formatierung des LaTeX-Templates
             latex_filled = latex_template.format(
                 name=name,
                 address=address,
@@ -120,13 +121,14 @@ if st.button("CV Erstellen"):
                 computer1=computer1, 
                 interests1=interests1
             )
+
+            # Anzeigen des gefüllten LaTeX-Codes auf der Streamlit-Oberfläche
+            st.text_area("Gefüllter LaTeX-Code", latex_filled, height=300)
+
         except KeyError as key_err:
             st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {key_err}")
         except Exception as format_err:
             st.error(f"Fehler bei der Formatierung: {format_err}")
-
-        # Anzeigen des gefüllten LaTeX-Codes auf der Streamlit-Oberfläche
-        st.text_area("Gefüllter LaTeX-Code", latex_filled, height=300)
 
     except FileNotFoundError:
         st.error("Die LaTeX-Vorlagendatei wurde nicht gefunden.")
