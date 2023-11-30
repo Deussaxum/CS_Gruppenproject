@@ -15,7 +15,7 @@ email = st.text_input("E-Mail")
 # Education
 st.header("Education")
 university1 = st.text_input("Universität/Schule 1")
-location_us1 = st.text_input("Standort 1")
+locationus1 = st.text_input("Standort 1")
 majorus1 = st.text_input("Studiengang 1")
 timeus1 = st.text_input("Zeitraum 1")
 courses1 = st.text_input("Kurse 1")
@@ -23,7 +23,7 @@ gpa1 = st.text_input("GPA 1")
 clubs1 = st.text_input("Clubs/Aktivitäten 1")
 
 university2 = st.text_input("Universität/Schule 2", "")
-location_us2 = st.text_input("Standort 2", "")
+locationus2 = st.text_input("Standort 2", "")
 majorus2 = st.text_input("Studiengang 2", "")
 timeus2 = st.text_input("Zeitraum 2", "")
 courses2 = st.text_input("Kurse 2", "")
@@ -33,7 +33,7 @@ clubs2 = st.text_input("Clubs/Aktivitäten 2", "")
 # Professional Experience
 st.header("Professional Experience")
 experience1 = st.text_input("Erfahrung 1")
-location_e1 = st.text_input("Standort Erfahrung 1")
+locatione1 = st.text_input("Standort Erfahrung 1")
 position1 = st.text_input("Position 1")
 timee1 = st.text_input("Zeitraum Erfahrung 1")
 task11 = st.text_area("Aufgaben 1", key='task11', height=100)
@@ -41,7 +41,7 @@ task12 = st.text_area("Aufgaben 2", key='task12', height=100)
 task13 = st.text_area("Aufgaben 3", key='task13', height=100)
 
 experience2 = st.text_input("Erfahrung 2", "")
-location_e2 = st.text_input("Standort Erfahrung 2", "")
+locatione2 = st.text_input("Standort Erfahrung 2", "")
 position2 = st.text_input("Position 2", "")
 timee2 = st.text_input("Zeitraum Erfahrung 2", "")
 task21 = st.text_area("Aufgaben 1", key='task21', height=100)
@@ -49,7 +49,7 @@ task22 = st.text_area("Aufgaben 2", key='task22', height=100)
 task23 = st.text_area("Aufgaben 3", key='task23', height=100)
 
 experience3 = st.text_input("Erfahrung 3", "")
-location_e3 = st.text_input("Standort Erfahrung 3", "")
+locatione3 = st.text_input("Standort Erfahrung 3", "")
 position3 = st.text_input("Position 3", "")
 timee3 = st.text_input("Zeitraum Erfahrung 3", "")
 task31 = st.text_area("Aufgaben 1", key='task31', height=100)
@@ -80,7 +80,7 @@ if st.button("CV Erstellen"):
         email=email,
 
         university1=university1, 
-        location_us1=location_us1, 
+        locationus1=locationus1, 
         majorus1=majorus1, 
         timeus1=timeus1,
         courses1=courses1, 
@@ -88,7 +88,7 @@ if st.button("CV Erstellen"):
         clubs1=clubs1,
 
         university2=university2, 
-        location_us2=location_us2, 
+        locationus2=locationus2, 
         majorus2=majorus2, 
         timeus2=timeus2, 
         courses2=courses2, 
@@ -96,7 +96,7 @@ if st.button("CV Erstellen"):
         clubs2=clubs2, 
 
         experience1=experience1, 
-        location_e1=location_e1, 
+        locatione1=locatione1, 
         position1=position1, 
         timee1=timee1, 
         task11=task11, 
@@ -104,7 +104,7 @@ if st.button("CV Erstellen"):
         task13=task13, 
 
         experience2=experience2, 
-        location_e2=location_e2, 
+        locatione2=locatione2, 
         position2=position2, 
         timee2=timee2, 
         task21=task21, 
@@ -112,7 +112,7 @@ if st.button("CV Erstellen"):
         task23=task23, 
 
         experience3=experience3,
-        location_e3=location_e3, 
+        locatione3=locatione3, 
         position3=position3, 
         timee3=timee3, 
         task31=task31, 
