@@ -87,7 +87,7 @@ def get_responses_from_sliders(sliders):
 
 # Main function
 def main():
-    st.image('/Users/dustinbaumbach/Desktop/360_F_209798420_6ZbtGqBjmzQlaiEET1eDWJnBwPLBa8XW.jpg', width=1200, use_column_width='true')  # This will display the image as a header
+    st.image('360_F_209798420_6ZbtGqBjmzQlaiEET1eDWJnBwPLBa8XW.jpg', width=1200, use_column_width='true')  # This will display the image as a header
     st.title("Career Fit Assessment Tool\n Assessment of Industry Fit based on Big 5 Personality Traits and Skillset")
 
     # Big Five Personality Questions
