@@ -127,6 +127,8 @@ if st.button("CV Erstellen"):
         interests1=interests1, 
     )
 
+    
+
     encoded_latex = urllib.parse.quote(latex_filled)
 
     # Senden des LaTeX-Textes an die LaTeX.Online API
