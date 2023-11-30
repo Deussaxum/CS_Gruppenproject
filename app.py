@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 # Streamlit-Benutzeroberfläche
 st.title("CV-Generator")
 
@@ -55,8 +54,8 @@ task31 = st.text_area("Aufgaben 1", key='task31', height=100)
 task32 = st.text_area("Aufgaben 2", key='task32', height=100)
 task33 = st.text_area("Aufgaben 3", key='task33', height=100)
 
-# Extracurriculat Activities / Engagement
-st.header("Extracurriculat Activities / Engagement")
+# Extracurricular Activities / Engagement
+st.header("Extracurricular Activities / Engagement")
 extracurricular1 = st.text_input("Extrakurrikulare Aktivitäten")
 additionaleducation1 = st.text_input("Zusätzliche Bildung")
 certificates1 = st.text_input("Zertifikate und Errungenschaften")
@@ -73,67 +72,63 @@ if st.button("CV Erstellen"):
         with open('template_finance.tex', 'r', encoding='utf-8') as file:
             latex_template = file.read()
 
-        latex_filled = latex_template.format(
-            name=name,
-            address=address,
-            phone=phone,
-            email=email,
-
-            university1=university1, 
-            locationus1=locationus1, 
-            majorus1=majorus1, 
-            timeus1=timeus1,
-            courses1=courses1, 
-            gpa1=gpa1, 
-            clubs1=clubs1,
-
-            university2=university2, 
-            locationus2=locationus2, 
-            majorus2=majorus2, 
-            timeus2=timeus2, 
-            courses2=courses2, 
-            gpa2=gpa2, 
-            clubs2=clubs2, 
-
-            experience1=experience1, 
-            locatione1=locatione1, 
-            position1=position1, 
-            timee1=timee1, 
-            task11=task11, 
-            task12=task12, 
-            task13=task13, 
-
-            experience2=experience2, 
-            locatione2=locatione2, 
-            position2=position2, 
-            timee2=timee2, 
-            task21=task21, 
-            task22=task22, 
-            task23=task23, 
-
-            experience3=experience3,
-            locatione3=locatione3, 
-            position3=position3, 
-            timee3=timee3, 
-            task31=task31, 
-            task32=task32, 
-            task33=task33, 
-
-            extracurricular1=extracurricular1, 
-            additionaleducation1=additionaleducation1, 
-            certificates1=certificates1, 
-
-            languages1=languages1,
-            computer1=computer1, 
-            interests1=interests1, 
-        )
+        try:
+            latex_filled = latex_template.format(
+                name=name,
+                address=address,
+                phone=phone,
+                email=email,
+                university1=university1, 
+                locationus1=locationus1, 
+                majorus1=majorus1, 
+                timeus1=timeus1,
+                courses1=courses1, 
+                gpa1=gpa1, 
+                clubs1=clubs1,
+                university2=university2, 
+                locationus2=locationus2, 
+                majorus2=majorus2, 
+                timeus2=timeus2, 
+                courses2=courses2, 
+                gpa2=gpa2, 
+                clubs2=clubs2, 
+                experience1=experience1, 
+                locatione1=locatione1, 
+                position1=position1, 
+                timee1=timee1, 
+                task11=task11, 
+                task12=task12, 
+                task13=task13, 
+                experience2=experience2, 
+                locatione2=locatione2, 
+                position2=position2, 
+                timee2=timee2, 
+                task21=task21, 
+                task22=task22, 
+                task23=task23, 
+                experience3=experience3,
+                locatione3=locatione3, 
+                position3=position3, 
+                timee3=timee3, 
+                task31=task31, 
+                task32=task32, 
+                task33=task33, 
+                extracurricular1=extracurricular1, 
+                additionaleducation1=additionaleducation1, 
+                certificates1=certificates1, 
+                languages1=languages1,
+                computer1=computer1, 
+                interests1=interests1
+            )
+        except KeyError as key_err:
+            st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {key_err}")
+        except Exception as format_err:
+            st.error(f"Fehler bei der Formatierung: {format_err}")
 
         # Anzeigen des gefüllten LaTeX-Codes auf der Streamlit-Oberfläche
         st.text_area("Gefüllter LaTeX-Code", latex_filled, height=300)
 
     except FileNotFoundError:
         st.error("Die LaTeX-Vorlagendatei wurde nicht gefunden.")
-    except KeyError as e:
-        st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {e}")
     except Exception as e:
         st.error(f"Ein unerwarteter Fehler ist aufgetreten: {e}")
