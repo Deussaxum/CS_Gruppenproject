@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+print("Hello World")
+=======
 #LinkedIn API
 
 
@@ -20,3 +23,5 @@ REDIRECT_URI = 'http://localhost:8501'  # This should match your Streamlit app's
 AUTHORIZATION_BASE_URL = 'https://www.linkedin.com/oauth/v2/authorization'
 TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken'
 SCOPE = ['r_liteprofile']  # Define your scopes here
+
+>>>>>>> b641975d5625cdc7fde4b52657e876e5ca07777d
