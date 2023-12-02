@@ -24,13 +24,13 @@ st.markdown(
 )
     
 # Function to create radar charts
-def plot_radar_chart(categories, scores, title):
+def plot_radar_chart(categories, scores, title, figure_size=(8, 8)):
     N = len(categories)
     angles = [n / float(N) * 2 * np.pi for n in range(N)]
     scores += scores[:1]
     angles += angles[:1]
 
-    fig, ax = plt.subplots(subplot_kw={"polar": True})
+    fig, ax = plt.subplots(subplot_kw={"polar": True}, figsize=figure_size)  # Set the figure size here
     ax.fill(angles, scores, color="skyblue", alpha=0.7, linewidth=2, edgecolor="blue")
     ax.set_xticks(angles[:-1])
     ax.set_xticklabels(categories, fontsize=12)
