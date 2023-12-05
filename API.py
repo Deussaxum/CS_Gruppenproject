@@ -1,70 +1,90 @@
 import streamlit as st
-from requests_oauthlib import OAuth2Session
-from requests.exceptions import HTTPError
+import requests
 
-# Constants
-CLIENT_ID = 'Key_01_here'
-CLIENT_SECRET = 'Key_02_here'
-REDIRECT_URI = 'Your_Redirect_URI_here'  # Your Streamlit app's address
-AUTHORIZATION_BASE_URL = 'https://www.linkedin.com/oauth/v2/authorization'
-TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken'
-SCOPE = ['openid', 'profile', 'email']  # Scopes for OpenID Connect
+# Define the API key and headers
+api_key = 'OQfhKnmj2k9bUHmlHH9Qbg'  # Replace with your actual API key
+headers = {'Authorization': 'Bearer ' + api_key}
+api_endpoint = 'https://nubela.co/proxycurl/api/v2/linkedin/company/job'
 
-# Function to parse query string
-def get_query_params():
-    return st.experimental_get_query_params()
+# URL of the LinkedIn logo
+logo_url = 'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png'
 
-# Start the OAuth process
-def start_oauth():
-    linkedin = OAuth2Session(CLIENT_ID, redirect_uri=REDIRECT_URI, scope=SCOPE)
-    authorization_url, state = linkedin.authorization_url(AUTHORIZATION_BASE_URL)
-    # Save the state in session for later use
-    st.session_state['oauth_state'] = state
-    # Redirect to LinkedIn for authorization
-    st.markdown(f"[Log in with LinkedIn]({authorization_url})", unsafe_allow_html=True)
+# Set the geo_id parameter which the user cannot change
+geo_id = '101282230'
 
-# Fetch token and user info
-def fetch_token_and_user_info(code):
-    try:
-        linkedin = OAuth2Session(CLIENT_ID, redirect_uri=REDIRECT_URI, scope=SCOPE)
-        # Add the client_secret parameter to the fetch_token() method call
-        token = linkedin.fetch_token(TOKEN_URL, client_secret=CLIENT_SECRET, code=code)
-        # Save the token in session
-        st.session_state['oauth_token'] = token
+# Function to capitalize labels
+def capitalize_labels(options):
+    return [option.replace('_', ' ').title() for option in options]
 
-        # Fetch user info
-        user_info = linkedin.get('https://api.linkedin.com/v2/me').json()
-        st.session_state['user_info'] = user_info
+# Function to display jobs
+def display_jobs(jobs):
+    for job in jobs:
+        st.write(f"**{job['job_title']}** at **{job['company']}**")
+        st.write(f"Location: {job['location']}")
+        st.write(f"Listed on: {job['list_date']}")
+        st.write(f"[Job Details]({job['job_url']})")
+        st.write("---------")
 
-        # Fetch user email
-        email_info = linkedin.get('https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))').json()
-        st.session_state['email_info'] = email_info.get('elements', [])[0].get('handle~', {}).get('emailAddress', '')
+# Initialize session state variables
+if 'jobs' not in st.session_state:
+    st.session_state['jobs'] = []
+    st.session_state['next_page_url'] = None
+    st.session_state['search_initiated'] = False
 
-    except HTTPError as e:
-        st.error(f'An HTTP error occurred: {e.response.status_code}')
-    except Exception as e:
-        st.error(f'An error occurred: {e}')
+# Adjust the column widths to align the logo with the end of the input fields
+col1, col2 = st.columns([0.9, 0.1])
 
-# Main App
-def main():
-    st.title("LinkedIn OpenID Connect Authentication")
+# Display the title in the first column
+with col1:
+    st.markdown("<h1 style='text-align: left;'>Job Search</h1>", unsafe_allow_html=True)
 
-    query_params = get_query_params()
-    code = query_params.get("code")
+# Display the logo in the second column
+with col2:
+    st.image(logo_url, width=60)  # Reduce the size of the picture by 60%
 
-    if "oauth_token" not in st.session_state:
-        if not code:
-            start_oauth()
+# Create search fields for user input
+job_type = st.selectbox('Job Type', capitalize_labels(['anything', 'full_time', 'part_time', 'internship', 'contract', 'temporary', 'volunteer']))
+experience_level = st.selectbox('Experience Level', capitalize_labels(['anything', 'internship', 'entry_level', 'associate', 'mid_senior_level', 'director']))
+when = st.selectbox('When', capitalize_labels(['anytime', 'yesterday', 'past-week', 'past-month']))
+flexibility = st.selectbox('Flexibility', capitalize_labels(['anything', 'remote', 'on-site', 'hybrid']))
+keyword = st.text_input('Keyword', '')
+
+# Container to display jobs below the input fields
+jobs_container = st.container()
+
+# Button to perform the API call
+if st.button('Search Jobs'):
+    st.session_state['search_initiated'] = True
+    st.session_state['jobs'] = []  # Clear previous jobs
+    params = {
+        'job_type': job_type.lower().replace(' ', '_'),
+        'experience_level': experience_level.lower().replace(' ', '_'),
+        'when': when.lower().replace(' ', '_'),
+        'flexibility': flexibility.lower().replace(' ', '_'),
+        'geo_id': geo_id,
+        'keyword': keyword
+    }
+    response = requests.get(api_endpoint, params=params, headers=headers)
+    if response.status_code == 200:
+        st.session_state['jobs'] = response.json().get('job', [])
+        st.session_state['next_page_url'] = response.json().get('next_page_api_url')
+        display_jobs(st.session_state['jobs'])
+    else:
+        st.error(f"Failed to retrieve jobs: {response.status_code}")
+
+# Function to load more jobs
+def load_more_jobs():
+    next_page_url = st.session_state['next_page_url']
+    if next_page_url:
+        response = requests.get(next_page_url, headers=headers)
+        if response.status_code == 200:
+            new_jobs = response.json().get('job', [])
+            st.session_state['jobs'].extend(new_jobs)  # Append new jobs
+            st.session_state['next_page_url'] = response.json().get('next_page_api_url')
+            display_jobs(st.session_state['jobs'])
         else:
-            fetch_token_and_user_info(code[0])
-            st.success("Authentication successful!")
+            st.error(f"Failed to load more jobs: {response.status_code}")
 
-    if "user_info" in st.session_state:
-        st.write("Your LinkedIn profile information:")
-        st.json(st.session_state['user_info'])
-
-        st.write("Your LinkedIn email information:")
-        st.write(st.session_state['email_info'])
-
-if __name__ == "__main__":
-    main()
+# Show the 'Load More' button only if a search has been initiated and there's a next page URL
+if st.session_state['search_initiated'] and st.session_state['next_page_url']:
+    st.button('Load More', on_click=load_more_jobs)
