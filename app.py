@@ -135,6 +135,9 @@ if st.button("CV Erstellen"):
             computer1=computer1,
             interests1=interests1
         )
+
+        st.text_area("Vorschau des LaTeX-Dokuments", latex_filled, height=300)
+        
     except KeyError as key_err:
         st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {key_err}")
         st.stop()
