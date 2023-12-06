@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import urllib.parse
+from string import Template
 
 # Streamlit-Benutzeroberfläche
 st.title("CV-Generator")
@@ -76,7 +77,7 @@ if st.button("CV Erstellen"):
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            latex_template = response.text
+            latex_template_string = response.text
         else:
             st.error("Vorlage konnte nicht geladen werden.")
             st.stop()
@@ -85,52 +86,53 @@ if st.button("CV Erstellen"):
         st.stop()
 
     try:
-        # Formatierung des LaTeX-Templates
-        latex_filled = latex_template.format(
+        # Erstellen des Template-Objekts und Formatierung des LaTeX-Templates
+        latex_template = Template(latex_template_string)
+        latex_filled = latex_template.safe_substitute(
             name=name,
             address=address,
             phone=phone,
             email=email,
-            university1=university1, 
-            locationus1=locationus1, 
-            majorus1=majorus1, 
+            university1=university1,
+            locationus1=locationus1,
+            majorus1=majorus1,
             timeus1=timeus1,
-            courses1=courses1, 
-            gpa1=gpa1, 
+            courses1=courses1,
+            gpa1=gpa1,
             clubs1=clubs1,
-            university2=university2, 
-            locationus2=locationus2, 
-            majorus2=majorus2, 
-            timeus2=timeus2, 
-            courses2=courses2, 
-            gpa2=gpa2, 
-            clubs2=clubs2, 
-            experience1=experience1, 
-            locatione1=locatione1, 
-            position1=position1, 
-            timee1=timee1, 
-            task11=task11, 
-            task12=task12, 
-            task13=task13, 
-            experience2=experience2, 
-            locatione2=locatione2, 
-            position2=position2, 
-            timee2=timee2, 
-            task21=task21, 
-            task22=task22, 
-            task23=task23, 
+            university2=university2,
+            locationus2=locationus2,
+            majorus2=majorus2,
+            timeus2=timeus2,
+            courses2=courses2,
+            gpa2=gpa2,
+            clubs2=clubs2,
+            experience1=experience1,
+            locatione1=locatione1,
+            position1=position1,
+            timee1=timee1,
+            task11=task11,
+            task12=task12,
+            task13=task13,
+            experience2=experience2,
+            locatione2=locatione2,
+            position2=position2,
+            timee2=timee2,
+            task21=task21,
+            task22=task22,
+            task23=task23,
             experience3=experience3,
-            locatione3=locatione3, 
-            position3=position3, 
-            timee3=timee3, 
-            task31=task31, 
-            task32=task32, 
-            task33=task33, 
-            extracurricular1=extracurricular1, 
-            additionaleducation1=additionaleducation1, 
-            certificates1=certificates1, 
+            locatione3=locatione3,
+            position3=position3,
+            timee3=timee3,
+            task31=task31,
+            task32=task32,
+            task33=task33,
+            extracurricular1=extracurricular1,
+            additionaleducation1=additionaleducation1,
+            certificates1=certificates1,
             languages1=languages1,
-            computer1=computer1, 
+            computer1=computer1,
             interests1=interests1
         )
     except KeyError as key_err:
