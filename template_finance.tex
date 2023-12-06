@@ -1,3 +1,61 @@
+\documentclass[a4paper,8pt]{{article}}
+
+\usepackage{{parskip}}
+\usepackage{{hologo}}
+\usepackage{{fontspec}}
+
+%other packages for formatting
+\RequirePackage{{color}}
+\RequirePackage{{graphicx}}
+\usepackage[usenames,dvipsnames]{{xcolor}}
+\usepackage[scale=0.9, top=.4in, bottom=.4in]{{geometry}}
+\usepackage8{{enumitem}}
+
+
+%tabularx environment
+\usepackage{{tabularx}}
+
+%for lists within experience section
+\usepackage{{enumitem}}
+
+% centered version of 'X' col. type
+
+
+
+%to prevent spillover of tabular into next pages
+\usepackage{{supertabular}}
+\usepackage{{tabularx}}
+\newlength{{\fullcollw}}
+\setlength{{\fullcollw}{0.42\textwidth}}
+
+%custom \section
+\usepackage{{titlesec}}             
+\usepackage{{multicol}}
+\usepackage{{multirow}}
+
+%CV Sections inspired by: 
+\titleformat{{\section}}{{\Large\scshape\raggedright}}{{0em}}[\titlerule]
+\titlespacing{{\section}}{{1pt}}{{2pt}}{{2pt}}
+
+%for publications
+\usepackage[style=authoryear,sorting=ynt, maxbibnames=2]{{biblatex}}
+
+%Setup hyperref package, and colours for links
+\usepackage[unicode, draft=false]{{hyperref}}
+\color[HTML]{{110223}}%
+\addbibresource{{citations.bib}}
+\setlength\bibitemsep{{1em}}
+
+%for social icons
+\usepackage{{fontawesome5}}
+% \usepackage
+
+% For underline
+\usepackage[normalem]{{ulem}}
+
+\setmainfont{{Arial}} 
+
+
 \begin{{document}}
 
 % Normale LaTeX-Struktur
