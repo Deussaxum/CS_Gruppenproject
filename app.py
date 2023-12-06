@@ -1,4 +1,6 @@
 import streamlit as st
+import requests
+import urllib.parse
 
 # Streamlit-Benutzeroberfläche
 st.title("CV-Generator")
@@ -68,69 +70,88 @@ interests1 = st.text_input("Interessen")
 
 # Button zum Erstellen des CVs
 if st.button("CV Erstellen"):
+    # URL der LaTeX-Vorlage im GitHub-Repository
+    url = "https://raw.githubusercontent.com/IHR_BENUTZERNAME/IHR_REPOSITORYNAME/main/template_finance.tex"
+    
     try:
-        with open('template_finance.tex', 'r', encoding='utf-8') as file:
-            latex_template = file.read()
+        response = requests.get(url)
+        if response.status_code == 200:
+            latex_template = response.text
+        else:
+            st.error("Vorlage konnte nicht geladen werden.")
+            st.stop()
+    except Exception as e:
+        st.error(f"Fehler beim Laden der Vorlage: {e}")
+        st.stop()
 
-        try:
-            # Formatierung des LaTeX-Templates
-            latex_filled = latex_template.format(
-                name=name,
-                address=address,
-                phone=phone,
-                email=email,
-                university1=university1, 
-                locationus1=locationus1, 
-                majorus1=majorus1, 
-                timeus1=timeus1,
-                courses1=courses1, 
-                gpa1=gpa1, 
-                clubs1=clubs1,
-                university2=university2, 
-                locationus2=locationus2, 
-                majorus2=majorus2, 
-                timeus2=timeus2, 
-                courses2=courses2, 
-                gpa2=gpa2, 
-                clubs2=clubs2, 
-                experience1=experience1, 
-                locatione1=locatione1, 
-                position1=position1, 
-                timee1=timee1, 
-                task11=task11, 
-                task12=task12, 
-                task13=task13, 
-                experience2=experience2, 
-                locatione2=locatione2, 
-                position2=position2, 
-                timee2=timee2, 
-                task21=task21, 
-                task22=task22, 
-                task23=task23, 
-                experience3=experience3,
-                locatione3=locatione3, 
-                position3=position3, 
-                timee3=timee3, 
-                task31=task31, 
-                task32=task32, 
-                task33=task33, 
-                extracurricular1=extracurricular1, 
-                additionaleducation1=additionaleducation1, 
-                certificates1=certificates1, 
-                languages1=languages1,
-                computer1=computer1, 
-                interests1=interests1
-            )
+    try:
+        # Formatierung des LaTeX-Templates
+        latex_filled = latex_template.format(
+            name=name,
+            address=address,
+            phone=phone,
+            email=email,
+            university1=university1, 
+            locationus1=locationus1, 
+            majorus1=majorus1, 
+            timeus1=timeus1,
+            courses1=courses1, 
+            gpa1=gpa1, 
+            clubs1=clubs1,
+            university2=university2, 
+            locationus2=locationus2, 
+            majorus2=majorus2, 
+            timeus2=timeus2, 
+            courses2=courses2, 
+            gpa2=gpa2, 
+            clubs2=clubs2, 
+            experience1=experience1, 
+            locatione1=locatione1, 
+            position1=position1, 
+            timee1=timee1, 
+            task11=task11, 
+            task12=task12, 
+            task13=task13, 
+            experience2=experience2, 
+            locatione2=locatione2, 
+            position2=position2, 
+            timee2=timee2, 
+            task21=task21, 
+            task22=task22, 
+            task23=task23, 
+            experience3=experience3,
+            locatione3=locatione3, 
+            position3=position3, 
+            timee3=timee3, 
+            task31=task31, 
+            task32=task32, 
+            task33=task33, 
+            extracurricular1=extracurricular1, 
+            additionaleducation1=additionaleducation1, 
+            certificates1=certificates1, 
+            languages1=languages1,
+            computer1=computer1, 
+            interests1=interests1
+        )
+    except KeyError as key_err:
+        st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {key_err}")
+        st.stop()
+    except Exception as format_err:
+        st.error(f"Fehler bei der Formatierung: {format_err}")
+        st.stop()
 
-            # Anzeigen des gefüllten LaTeX-Codes auf der Streamlit-Oberfläche
-            st.text_area("Gefüllter LaTeX-Code", latex_filled, height=300)
+    try:
+        # URL-Kodierung des LaTeX-Codes
+        encoded_latex = urllib.parse.quote(latex_filled)
 
-        except KeyError as key_err:
-            st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {key_err}")
-        except Exception as format_err:
-            st.error(f"Fehler bei der Formatierung: {format_err}")
+        # Senden des kodierten LaTeX-Codes an die LaTeX.Online API
+        api_url = f"https://latexonline.cc/compile?text={encoded_latex}"
+        response = requests.get(api_url)
 
-    except FileNotFoundError:
-        st.error("Die LaTeX-Vorlagendatei wurde nicht gefunden.")
+        if response.status_code == 200:
+            pdf = response.content
+            st.download_button(label="Download CV", data=pdf, file_name="cv.pdf", mime="application/pdf")
+        else:
+            st.error(f"Fehler bei der Erstellung des CVs: {response.text}")
     except Exception as e:
         st.error(f"Ein unerwarteter Fehler ist aufgetreten: {e}")
