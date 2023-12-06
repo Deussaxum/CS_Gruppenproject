@@ -145,7 +145,7 @@ if st.button("CV Erstellen"):
         encoded_latex = urllib.parse.quote(latex_filled)
 
         # Senden des kodierten LaTeX-Codes an die LaTeX.Online API
-        api_url = f"https://latexonline.cc/compile?text={encoded_latex}"
+        api_url = f"https://latexonline.cc/compile?text={encoded_latex}&command=xelatex"
         response = requests.get(api_url)
 
         if response.status_code == 200:
