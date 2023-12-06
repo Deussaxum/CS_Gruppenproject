@@ -71,7 +71,7 @@ interests1 = st.text_input("Interessen")
 # Button zum Erstellen des CVs
 if st.button("CV Erstellen"):
     # URL der LaTeX-Vorlage im GitHub-Repository
-    url = "https://raw.githubusercontent.com/IHR_BENUTZERNAME/IHR_REPOSITORYNAME/main/template_finance.tex"
+    url = "https://raw.githubusercontent.com/Deussaxum/CS_Gruppenproject/main/template_finance.tex"
     
     try:
         response = requests.get(url)
