@@ -1,162 +1,137 @@
+
 import streamlit as st
-import requests
-import urllib.parse
-from string import Template
 
-# Streamlit-Benutzeroberfläche
-st.title("CV-Generator")
 
-# Persönliche Informationen
-st.header("Personal Information")
-name = st.text_input("Name")
-address = st.text_input("Adresse")
-phone = st.text_input("Telefonnummer")
-email = st.text_input("E-Mail")
+st.set_page_config(
+    page_title="Career Compass 🧭",
+)
 
-# Education
-st.header("Education")
-university1 = st.text_input("Universität/Schule 1")
-locationus1 = st.text_input("Standort 1")
-majorus1 = st.text_input("Studiengang 1")
-timeus1 = st.text_input("Zeitraum 1")
-courses1 = st.text_input("Kurse 1")
-gpa1 = st.text_input("GPA 1")
-clubs1 = st.text_input("Clubs/Aktivitäten 1")
 
-university2 = st.text_input("Universität/Schule 2", "")
-locationus2 = st.text_input("Standort 2", "")
-majorus2 = st.text_input("Studiengang 2", "")
-timeus2 = st.text_input("Zeitraum 2", "")
-courses2 = st.text_input("Kurse 2", "")
-gpa2 = st.text_input("GPA 2", "")
-clubs2 = st.text_input("Clubs/Aktivitäten 2", "")
+header_image_url = "https://cdn.thenudge.com/wp-content/uploads/2022/09/skyline.png"
+st.image(header_image_url)
 
-# Professional Experience
-st.header("Professional Experience")
-experience1 = st.text_input("Erfahrung 1")
-locatione1 = st.text_input("Standort Erfahrung 1")
-position1 = st.text_input("Position 1")
-timee1 = st.text_input("Zeitraum Erfahrung 1")
-task11 = st.text_area("Aufgaben 1", key='task11', height=100)
-task12 = st.text_area("Aufgaben 2", key='task12', height=100)
-task13 = st.text_area("Aufgaben 3", key='task13', height=100)
+st.title("The Career Compass CV Generator")
+st.subheader("Creating your own CV has never been easier!")
 
-experience2 = st.text_input("Erfahrung 2", "")
-locatione2 = st.text_input("Standort Erfahrung 2", "")
-position2 = st.text_input("Position 2", "")
-timee2 = st.text_input("Zeitraum Erfahrung 2", "")
-task21 = st.text_area("Aufgaben 1", key='task21', height=100)
-task22 = st.text_area("Aufgaben 2", key='task22', height=100)
-task23 = st.text_area("Aufgaben 3", key='task23', height=100)
+st.info("""
+    Struggling with frequent rejections despite possessing valuable experience and skills? Look no further – the Career Compass CV Generator is here to solve this challenge by crafting a tailored CV that accurately showcases your capabilities. In just under 10 minutes, our user-friendly platform, enhanced by the LinkedIn API, will generate the perfect CV for you.
 
-experience3 = st.text_input("Erfahrung 3", "")
-locatione3 = st.text_input("Standort Erfahrung 3", "")
-position3 = st.text_input("Position 3", "")
-timee3 = st.text_input("Zeitraum Erfahrung 3", "")
-task31 = st.text_area("Aufgaben 1", key='task31', height=100)
-task32 = st.text_area("Aufgaben 2", key='task32', height=100)
-task33 = st.text_area("Aufgaben 3", key='task33', height=100)
+    Our solution doesn't stop at optimizing your CV; we understand that identifying the right places to apply is equally crucial. Introducing the Industry Fit Assessment. By analyzing your personality traits and skills, we will identify the industry you would fit in the best. This empowers you to apply strategically, increasing your chances of landing a position that aligns with your abilities and professional goals.
 
-# Extracurricular Activities / Engagement
-st.header("Extracurricular Activities / Engagement")
-extracurricular1 = st.text_input("Extrakurrikulare Aktivitäten")
-additionaleducation1 = st.text_input("Zusätzliche Bildung")
-certificates1 = st.text_input("Zertifikate und Errungenschaften")
+    Don't let rejection letters deter you – let the Career Compass CV Generator and the Industry Fit Assessment be your allies in navigating the competitive job market. Take control of your career journey with confidence and precision.
+""")
 
-# Skills & Interest
-st.header("Skills & Interest")
-languages1 = st.text_input("Sprachen")
-computer1 = st.text_input("Computerkenntnisse")
-interests1 = st.text_input("Interessen")
+st.subheader("HOW IT WORKS")
+st.info("1. Determine which industry suits you best by taking our test based on the Industry Fit Assessment.")
+st.info("2. Choose the industry you want your CV to be tailored to by going to the CV Generator and choosing the industry.")
+st.info("3. If you already know which industry to apply for, you can directly go to the CV Generator and choose the corresponding industry.")
+st.info("4. Insert your data by easily importing it from LinkedIn to streamline your CV creation process!")
 
-# Button zum Erstellen des CVs
-if st.button("CV Erstellen"):
-    # URL der LaTeX-Vorlage im GitHub-Repository
-    url = "https://raw.githubusercontent.com/Deussaxum/CS_Gruppenproject/main/template_finance.tex"
+st.subheader("What is the Industry Fit Assessment?")
+
+st.info("""
+    The Industry Fit Assessment serves as a valuable tool to guide you in determining the ideal industry for your job applications. It operates through a comprehensive questionnaire designed to assess various facets of your personality, skills, and expectations regarding work-life balance. The process involves completing a thoughtfully curated set of questions that delve into different dimensions of your character.
+
+    Once you've provided your responses, the test leverages advanced algorithms to analyze and compare your answers against a diverse array of industries. The ultimate goal is to pinpoint the sector that aligns most closely with your unique combination of personality traits and skills, ensuring a tailored career fit.
+
+    The results are presented in a visually accessible format, utilizing diagrams to illustrate your skills and personality traits. Here you can see some examples for such diagrams: 
+""")
+
+local_image_path1 = "/Applications/DustinDia1.png"
+local_image_path2 = "/Applications/DustinDia2.jpg"
+local_image_path3 = "/Applications/DustinDia3.png"
+local_image_path4 = "/Applications/DustinDia4.png"
+col1, col2 = st.columns(2)
+
+# Box 1
+with col1:
     
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            latex_template_string = response.text
-        else:
-            st.error("Vorlage konnte nicht geladen werden.")
-            st.stop()
-    except Exception as e:
-        st.error(f"Fehler beim Laden der Vorlage: {e}")
-        st.stop()
+    st.image(local_image_path1)
+  
 
-    try:
-        # Erstellen des Template-Objekts und Formatierung des LaTeX-Templates
-        latex_template = Template(latex_template_string)
-        latex_filled = latex_template.safe_substitute(
-            name=name,
-            address=address,
-            phone=phone,
-            email=email,
-            university1=university1,
-            locationus1=locationus1,
-            majorus1=majorus1,
-            timeus1=timeus1,
-            courses1=courses1,
-            gpa1=gpa1,
-            clubs1=clubs1,
-            university2=university2,
-            locationus2=locationus2,
-            majorus2=majorus2,
-            timeus2=timeus2,
-            courses2=courses2,
-            gpa2=gpa2,
-            clubs2=clubs2,
-            experience1=experience1,
-            locatione1=locatione1,
-            position1=position1,
-            timee1=timee1,
-            task11=task11,
-            task12=task12,
-            task13=task13,
-            experience2=experience2,
-            locatione2=locatione2,
-            position2=position2,
-            timee2=timee2,
-            task21=task21,
-            task22=task22,
-            task23=task23,
-            experience3=experience3,
-            locatione3=locatione3,
-            position3=position3,
-            timee3=timee3,
-            task31=task31,
-            task32=task32,
-            task33=task33,
-            extracurricular1=extracurricular1,
-            additionaleducation1=additionaleducation1,
-            certificates1=certificates1,
-            languages1=languages1,
-            computer1=computer1,
-            interests1=interests1
-        )
+# Box 2
+with col2:
+   
+    st.image(local_image_path2)
+   
 
-        st.text_area("Vorschau des LaTeX-Dokuments", latex_filled, height=300)
-        
-    except KeyError as key_err:
-        st.error(f"Fehler bei der Formatierung: Unbekannter Platzhalter {key_err}")
-        st.stop()
-    except Exception as format_err:
-        st.error(f"Fehler bei der Formatierung: {format_err}")
-        st.stop()
+# Box 3
+with col1:
+  
+    st.image(local_image_path3)
+    
 
-    try:
-        # URL-Kodierung des LaTeX-Codes
-        encoded_latex = urllib.parse.quote(latex_filled)
+# Box 4
+with col2:
+   
+    st.image(local_image_path4)
+  
 
-        # Senden des kodierten LaTeX-Codes an die LaTeX.Online API
-        api_url = f"https://latexonline.cc/compile?text={encoded_latex}&command=xelatex"
-        response = requests.get(api_url)
+st.subheader("Industry Overview")
 
-        if response.status_code == 200:
-            pdf = response.content
-            st.download_button(label="Download CV", data=pdf, file_name="cv.pdf", mime="application/pdf")
-        else:
-            st.error(f"Fehler bei der Erstellung des CVs: {response.text}")
-    except Exception as e:
-        st.error(f"Ein unerwarteter Fehler ist aufgetreten: {e}")
+image_url_1 = "https://media.gq-magazin.de/photos/5f684a5c1744746f33a1c573/1:1/w_1248,h_1248,c_limit/leonardo-dicaprio-el-lobo-de-wall-street.jpg"
+image_url_2 = "https://media.gq-magazin.de/photos/5f684a5c1744746f33a1c573/1:1/w_1248,h_1248,c_limit/leonardo-dicaprio-el-lobo-de-wall-street.jpg"
+image_url_3 = "https://media.gq-magazin.de/photos/5f684a5c1744746f33a1c573/1:1/w_1248,h_1248,c_limit/leonardo-dicaprio-el-lobo-de-wall-street.jpg"
+image_url_4 = "https://media.gq-magazin.de/photos/5f684a5c1744746f33a1c573/1:1/w_1248,h_1248,c_limit/leonardo-dicaprio-el-lobo-de-wall-street.jpg"
+image_url_5 = "https://media.gq-magazin.de/photos/5f684a5c1744746f33a1c573/1:1/w_1248,h_1248,c_limit/leonardo-dicaprio-el-lobo-de-wall-street.jpg"
+image_url_6 = "https://media.gq-magazin.de/photos/5f684a5c1744746f33a1c573/1:1/w_1248,h_1248,c_limit/leonardo-dicaprio-el-lobo-de-wall-street.jpg"
+
+
+col1, col2 = st.columns(2)
+
+# Box 1
+with col1:
+    st.subheader("Consulting 🛫")
+    st.image(image_url_1)
+    st.write("As a consultant, you provide expert advice to organizations, helping them improve performance, operations, and profitability. Your role involves analyzing situations, identifying problems, and presenting comprehensive solutions to meet client needs.")
+
+# Box 2
+with col2:
+    st.subheader("Finance 📈")
+    st.image(image_url_2)
+    st.write("In Finance you offer financial advice, prepare lending agreements, and ensure accurate corporate records. Your role involves working with corporations of various sizes, providing services like credit, treasury, financing, and commercial analysis to meet their financial needs.")
+
+# Box 3
+with col1:
+    st.subheader("Corporate 🏢")
+    st.image(image_url_3)
+    st.write("In Corporate, you work within an organization with opportunities for career advancement, beeing resposible for a variety of roles including account management, providing financial advice, or ensuring accurate records to contribute to the companys business goals.")
+
+# Box 4
+with col2:
+    st.subheader("Start-Up 🚀")
+    st.image(image_url_4)
+    st.write("In a startup, you typically wear multiple hats, taking on various responsibilities that can range from strategic planning to hands-on execution. Your role may involve setting direction, creating culture, and driving growth, all while adapting to the fast-paced and ever-changing startup environment.")
+
+ # Box 5
+with col1:
+    st.subheader("IT 💻")
+    st.image(image_url_4)
+    st.write("As an IT professional, you manage and store data using computers, software, databases, networks, and servers, and your role may include writing programs, maintaining networks, analyzing systems, and providing technical support.") 
+
+ # Box 6
+with col2:
+    st.subheader("Academic 📚")
+    st.image(image_url_4)
+    st.write("Working in Academia involves teaching, guiding students through lectures and seminars, and conducts research to contribute to their field of expertise. You often participate in academic service such as serving on committees and reviewing scholarly work.")
+st.write("   ")
+st.write("   ")
+st.write("   ")
+st.write("   ")
+st.write("   ")
+st.write("   ")
+
+col1, col2 = st.columns(2)
+
+button1_clicked = col1.button("CV Generator")
+
+button2_clicked = col2.button("Industry Fit Assessment")
+
+
+if button1_clicked:
+    st.write("Knopf 1 wurde geklickt!")
+
+if button2_clicked:
+    st.write("Knopf 2 wurde geklickt!")
+
+st.sidebar.success("Please select a page Above.")
